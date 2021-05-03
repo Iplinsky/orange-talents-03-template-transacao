@@ -56,7 +56,7 @@ public class TransacaoController {
 	@GetMapping("/{id}")
 	public List<TransacaoResponseDto> ConsultarTransacao(@PathVariable String id,
 			@PageableDefault(sort = "efetivadaEm", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
-
+		
 		List<Transacao> transacoes = transacaoRepository.findTop10ByCartaoId(id, pageable);
 
 		if (transacoes.isEmpty())

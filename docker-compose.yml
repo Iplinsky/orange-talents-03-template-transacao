@@ -22,7 +22,7 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     networks:
@@ -169,7 +169,7 @@ services:
   db:
     container_name: db_transacao
     image: mariadb:latest  
-    restart: always  
+    restart: always
     environment:      
       MYSQL_ROOT_PASSWORD: 1234
     volumes:
@@ -185,13 +185,15 @@ services:
     ports:
       - 8081:8080
     environment:
-      KAFKA_HOST: kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092      
       KAFKA_CONSUMER_GROUP_ID: transaction
       KAFKA_AUTO-OFFSET-RESET: latest
       URL_SISTEMA_BANCARIO: http://localhost:7777/api/cartoes      
       SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/db_transacao?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
+      KEYCLOAK_ISSUER_URI: http://localhost:18080/auth/realms/transacao
+      KEYCLOAK_JWKS_URI: http://localhost:18080/auth/realms/transacao/protocol/openid-connect/certs
     depends_on:
       - keycloak
       - analise
@@ -200,7 +202,6 @@ services:
       - db
     networks:
       - transaction-net
-
     
 volumes:
   grafana-volume:
