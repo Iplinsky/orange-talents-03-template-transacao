@@ -1,49 +1,65 @@
-package br.com.zupacademy.transacao.models;
+package br.com.zupacademy.transacao.transacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+
+import com.sun.istack.NotNull;
+
+import br.com.zupacademy.transacao.cartao.Cartao;
+import br.com.zupacademy.transacao.estabelecimento.Estabelecimento;
 
 @Entity
 public class Transacao {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@NotBlank
+	@Column(nullable = false)
+	private String id;
 
 	@Positive
-//	@Column(nullable = false)
+	@Column(nullable = false)
 	private BigDecimal valor;
 
+	@Valid
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "estabelecimento_id")
 	private Estabelecimento estabelecimento;
 
+	@Valid
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "cartao_id")
 	private Cartao cartao;
 
-//	@Column(nullable = false)
+	@Column(nullable = false)
 	private LocalDateTime efetivadaEm;
 
 	@Deprecated
 	public Transacao() {
 	}
 
-	public Transacao(@Positive BigDecimal valor, @Valid Estabelecimento estabelecimento, @Valid Cartao cartao,
-			LocalDateTime efetivadaEm) {
+	public Transacao(@Positive @NotNull BigDecimal valor, @NotNull @Valid Estabelecimento estabelecimento,
+			@NotNull @Valid Cartao cartao, @NotNull LocalDateTime efetivadaEm) {
 		this.valor = valor;
 		this.estabelecimento = estabelecimento;
 		this.cartao = cartao;
 		this.efetivadaEm = efetivadaEm;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
 	}
 
 	public Estabelecimento getEstabelecimento() {
@@ -52,6 +68,10 @@ public class Transacao {
 
 	public Cartao getCartao() {
 		return cartao;
+	}
+
+	public LocalDateTime getEfetivadaEm() {
+		return efetivadaEm;
 	}
 
 	@Override

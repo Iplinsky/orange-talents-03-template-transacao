@@ -1,46 +1,49 @@
-package br.com.zupacademy.transacao.models;
+package br.com.zupacademy.transacao.cartao;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Email;
+import javax.validation.Valid;
+
+import br.com.zupacademy.transacao.transacao.Transacao;
 
 @Entity
 public class Cartao {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String id;
 
-//	@Column(nullable = false)
-	private String nrCartao;
-
-	@Email
-//	@Column(nullable = false)
 	private String email;
 
+	@Valid
 	@OneToMany(mappedBy = "cartao")
-	private Set<Transacao> transacao = new HashSet<Transacao>();
+	private Set<Transacao> transacoes = new HashSet<Transacao>();
 
 	@Deprecated
 	public Cartao() {
 	}
 
-	public Cartao( String nrCartao,  @Email String email) {
-		this.nrCartao = nrCartao;
+	public Cartao(String id, String email) {
+		this.id = id;
 		this.email = email;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getEmail() {
+		return email;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((nrCartao == null) ? 0 : nrCartao.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -53,10 +56,10 @@ public class Cartao {
 		if (getClass() != obj.getClass())
 			return false;
 		Cartao other = (Cartao) obj;
-		if (nrCartao == null) {
-			if (other.nrCartao != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!nrCartao.equals(other.nrCartao))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

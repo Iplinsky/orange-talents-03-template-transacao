@@ -1,9 +1,9 @@
-package br.com.zupacademy.transacao.models.request;
+package br.com.zupacademy.transacao.transacao;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class CartaoRequestDto {
+public class TransacaoRequestDto {
 
 	@NotBlank
 	private String id;
@@ -12,7 +12,7 @@ public class CartaoRequestDto {
 	@NotBlank
 	private String email;
 
-	public CartaoRequestDto(@NotBlank String id, @Email @NotBlank String email) {
+	public TransacaoRequestDto(@NotBlank String id, @Email @NotBlank String email) {
 		this.id = id;
 		this.email = email;
 	}

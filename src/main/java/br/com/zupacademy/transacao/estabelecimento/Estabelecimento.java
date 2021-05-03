@@ -1,4 +1,4 @@
-package br.com.zupacademy.transacao.models;
+package br.com.zupacademy.transacao.estabelecimento;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+
+import br.com.zupacademy.transacao.transacao.Transacao;
 
 @Entity
 public class Estabelecimento {
@@ -16,26 +19,28 @@ public class Estabelecimento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-//	@Column(nullable = false)
 	private String nome;
 
-//	@Column(nullable = false)
 	private String cidade;
 
-//	@Column(nullable = false)
 	private String endereco;
 
+	@Valid
 	@OneToMany(mappedBy = "estabelecimento")
-	private Set<Transacao> transacao = new HashSet<Transacao>();
+	private Set<Transacao> transacoes = new HashSet<Transacao>();
 
 	@Deprecated
 	public Estabelecimento() {
 	}
 
-	public Estabelecimento( String nome,  String cidade,  String endereco) {
+	public Estabelecimento(String nome, String cidade, String endereco) {
 		this.nome = nome;
 		this.cidade = cidade;
 		this.endereco = endereco;
+	}
+
+	public String getNome() {
+		return nome;
 	}
 
 	@Override
